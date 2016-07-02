@@ -84,9 +84,7 @@ public class SolutionTest {
 
     @Test
     public void main() throws IOException, URISyntaxException {
-        String separator = FileSystems.getDefault().getSeparator();
-        String path = getTestDataFilePath();
-        File folder = new File(path);
+        File folder = new File(getTestDataFilePath());
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles != null) {
             for (File testDataFile : listOfFiles) {
