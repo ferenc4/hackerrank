@@ -1,12 +1,12 @@
 package Mathematics.Algebra.stepping_stones_game;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
+import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,7 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Ferenc on 6/30/2016.
  */
 public class SolutionTest {
-    ByteArrayOutputStream outContent = new ByteArrayOutputStream();;
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    ;
     final String outputTestFileNamePattern = "output(\\d\\d).txt";
 
     public void setUpOutputStream() {
@@ -47,13 +48,22 @@ public class SolutionTest {
 
     void runTest(String testId) throws IOException {
         String newLn = System.lineSeparator();
-        //run test here
+
         Solution.main(new String[]{"main"});
 
-        String expected = IOUtils.toString(new FileReader(outputFile(testId)));
-        String actual = new String(outContent.toByteArray());
-        assertThat(actual).matches(expected + "(" + newLn + ")?");
-        System.err.println("matched");
+        Scanner actual = new Scanner(new String(outContent.toByteArray()));
+        Scanner expected = new Scanner(outputFile(testId));
+        int line = 0;
+        while (actual.hasNextLine() && expected.hasNextLine()) {
+            line++;
+            assertThat(actual.nextLine())
+                    .as("checking line %d in %s", line, outputFile(testId))
+                    .isEqualTo(expected.nextLine());
+        }
+        if (actual.hasNextLine() && !expected.hasNextLine()) {
+            assertThat(actual.nextLine()).isEmpty();
+            assertThat(actual.hasNextLine()).isFalse();
+        }
     }
 
     String getTestId(String name) {
@@ -70,11 +80,11 @@ public class SolutionTest {
             for (File testDataFile : listOfFiles) {
                 if (testDataFile.isFile() && testDataFile.getName().matches(outputTestFileNamePattern)) {
                     String testId = getTestId(testDataFile.getName());
-                    System.err.println(testId);
 
                     setUpInputStream(testId);
                     setUpOutputStream();
 
+                    System.err.println("Running testdata:" + testId);
                     runTest(testId);
 
                     cleanUpInputStream();

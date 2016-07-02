@@ -12,7 +12,6 @@ public class Solution {
         Scanner sc = new Scanner(System.in);
         if (sc.hasNextInt()) {
             int games = sc.nextInt();
-            System.err.println(games);
             if(games > 0) {
                 runSimulation(sc);
                 for (int i = 1; i < games; i++) {
