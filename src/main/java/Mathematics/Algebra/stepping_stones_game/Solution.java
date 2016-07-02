@@ -13,8 +13,12 @@ public class Solution {
         if (sc.hasNextInt()) {
             int games = sc.nextInt();
             System.err.println(games);
-            for (int i = 0; i < games; i++) {
+            if(games > 0) {
                 runSimulation(sc);
+                for (int i = 1; i < games; i++) {
+                    System.out.println();
+                    runSimulation(sc);
+                }
             }
         }
     }
@@ -24,9 +28,9 @@ public class Solution {
             BigInteger goalBlock = sc.nextBigInteger();
             BigInteger steps = getSteps(goalBlock);
             if (steps.equals(BigInteger.valueOf(-1))) {
-                System.out.println("Better Luck Next Time");
+                System.out.print("Better Luck Next Time");
             } else {
-                System.out.println("Go On Bob " + steps.toString());
+                System.out.print("Go On Bob " + steps.toString());
             }
         }
     }

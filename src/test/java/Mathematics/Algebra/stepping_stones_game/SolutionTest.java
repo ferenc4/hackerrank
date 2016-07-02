@@ -51,7 +51,10 @@ public class SolutionTest {
 
         String expected = IOUtils.toString(new FileReader(outputFile(testId)));
         String actual = new String(outContent.toByteArray());
-        assertThat(actual).matches(expected + "(" + newLn + ")?");
+//        Removed check for optional new line to simplify assertion until the output buffer can finally be cleared after each test.
+//        todo to put back the next line after issue is fixed
+//        assertThat(actual).matches(expected + "(" + newLn + ")?");
+        assertThat(actual).isEqualTo(expected);
         System.err.println("matched");
     }
 
