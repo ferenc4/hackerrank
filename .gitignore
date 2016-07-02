@@ -1,11 +1,9 @@
 ### Example user template template
 ### Example user template
-# Dependencies
 lib
-
-# IntelliJ project files
 .gradle
-.idea
+build
+
 out
 gen### Java template
 *.class
@@ -20,6 +18,7 @@ gen### Java template
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
 ### C++ template
 # Compiled Object files
 *.slo
@@ -96,5 +95,3 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
-
-build
