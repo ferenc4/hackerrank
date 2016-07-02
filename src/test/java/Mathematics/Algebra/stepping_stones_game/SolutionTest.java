@@ -14,10 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Ferenc on 6/30/2016.
  */
 public class SolutionTest {
-    final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();;
     final String outputTestFileNamePattern = "output(\\d\\d).txt";
 
     public void setUpOutputStream() {
+        outContent.reset();
         System.setOut(new PrintStream(outContent));
     }
 
@@ -51,10 +52,7 @@ public class SolutionTest {
 
         String expected = IOUtils.toString(new FileReader(outputFile(testId)));
         String actual = new String(outContent.toByteArray());
-//        Removed check for optional new line to simplify assertion until the output buffer can finally be cleared after each test.
-//        todo to put back the next line after issue is fixed
-//        assertThat(actual).matches(expected + "(" + newLn + ")?");
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).matches(expected + "(" + newLn + ")?");
         System.err.println("matched");
     }
 
