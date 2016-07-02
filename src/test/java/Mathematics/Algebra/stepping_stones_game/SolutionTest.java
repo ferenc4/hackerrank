@@ -38,15 +38,23 @@ public class SolutionTest {
         System.setIn(null);
     }
 
+    String inputFileName(String id) {
+        return "input" + id + ".txt";
+    }
+
     File inputFile(String id) {
-        return new File(getTestDataFilePath() + "input" + id + ".txt");
+        return new File(getTestDataFilePath() + inputFileName(id));
+    }
+
+    String outputFileName(String id) {
+        return "output" + id + ".txt";
     }
 
     File outputFile(String id) {
-        return new File(getTestDataFilePath() + "output" + id + ".txt");
+        return new File(getTestDataFilePath() + outputFileName(id));
     }
 
-    void runTest(String testId) throws IOException {
+    void doAssertion(String testId) throws IOException {
         String newLn = System.lineSeparator();
 
         Solution.main(new String[]{"main"});
@@ -57,13 +65,17 @@ public class SolutionTest {
         while (actual.hasNextLine() && expected.hasNextLine()) {
             line++;
             assertThat(actual.nextLine())
-                    .as("checking line %d in %s", line, outputFile(testId))
+                    .as("checking line %d in %s", line, outputFile(testId).getAbsolutePath())
                     .isEqualTo(expected.nextLine());
         }
         if (actual.hasNextLine() && !expected.hasNextLine()) {
             assertThat(actual.nextLine()).isEmpty();
             assertThat(actual.hasNextLine()).isFalse();
         }
+        System.err.println(getClass().getPackage().getName() + " passed against data (" +
+                outputFileName(testId) + "," +
+                inputFileName(testId) + ")"
+        );
     }
 
     String getTestId(String name) {
@@ -84,8 +96,7 @@ public class SolutionTest {
                     setUpInputStream(testId);
                     setUpOutputStream();
 
-                    System.err.println("Running testdata:" + testId);
-                    runTest(testId);
+                    doAssertion(testId);
 
                     cleanUpInputStream();
                     cleanUpOutputStream();
