@@ -8,6 +8,49 @@ import java.util.Scanner;
  */
 public class Solution {
 
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        if (sc.hasNextInt()) {
+            int games = sc.nextInt();
+            System.err.println(games);
+            for (int i = 0; i < games; i++) {
+                runSimulation(sc);
+            }
+        }
+    }
+
+    public static void runSimulation(Scanner sc) {
+        if (sc.hasNextBigInteger()) {
+            BigInteger goalBlock = sc.nextBigInteger();
+            BigInteger steps = getSteps(goalBlock);
+            if (steps.equals(BigInteger.valueOf(-1))) {
+                System.out.println("Better Luck Next Time");
+            } else {
+                System.out.println("Go On Bob " + steps.toString());
+            }
+        }
+    }
+
+    public static BigInteger getSteps(BigInteger goalBlock) {
+        BigInteger calcPart = goalBlock
+                .multiply(BigInteger.valueOf(8))
+                .add(BigInteger.ONE);
+
+        BigInteger root = sqrt(calcPart);
+        if (root.multiply(root).equals(calcPart)) {
+
+            BigInteger steps[] = root
+                    .subtract(BigInteger.ONE)
+                    .divideAndRemainder(BigInteger.valueOf(2));
+            if (steps[1].equals(BigInteger.ZERO)) {
+                return steps[0];
+            } else {
+                return BigInteger.valueOf(-1);
+            }
+        }
+        return BigInteger.valueOf(-1);
+    }
+
     public static BigInteger sqrt(BigInteger x) {
         BigInteger div = BigInteger.ZERO.setBit(x.bitLength() / 2);
         BigInteger div2 = div;
@@ -20,34 +63,6 @@ public class Solution {
                 return y;
             div2 = div;
             div = y;
-        }
-    }
-
-    public static void main(String[] args) {
-        int games = 0;
-        Scanner sc = new Scanner(System.in);
-        if (sc.hasNextInt()) {
-            games = sc.nextInt();
-        }
-        System.err.println(games);
-        for (int i = 0; i < games; i++) {
-            if (sc.hasNextBigInteger()) {
-                BigInteger goalBlock = sc.nextBigInteger();
-                BigInteger calcPart = goalBlock
-                        .multiply(BigInteger.valueOf(8))
-                        .add(BigInteger.ONE);
-                BigInteger steps = sqrt(calcPart);
-                if (steps.multiply(steps).equals(calcPart)) {
-                    steps = steps
-                            .subtract(BigInteger.ONE)
-                            .divide(BigInteger.valueOf(2));
-                    System.out.println("Go On Bob " + steps.toString());
-                    System.err.println("Go On Bob " + steps.toString());
-                } else {
-                    System.out.println("Better Luck Next Time");
-                    System.err.println("Better Luck Next Time");
-                }
-            }
         }
     }
 }

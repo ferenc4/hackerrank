@@ -56,7 +56,7 @@ public class SolutionTest {
     }
 
     String getTestId(String name) {
-        return name.replaceAll("\\D+","");
+        return name.replaceAll("\\D+", "");
     }
 
     @Test
