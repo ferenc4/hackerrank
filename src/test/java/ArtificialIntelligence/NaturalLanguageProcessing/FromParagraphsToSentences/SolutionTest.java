@@ -1,4 +1,5 @@
-package Mathematics.Algebra.SteppingStonesGame;
+package ArtificialIntelligence.NaturalLanguageProcessing.FromParagraphsToSentences;
+
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;

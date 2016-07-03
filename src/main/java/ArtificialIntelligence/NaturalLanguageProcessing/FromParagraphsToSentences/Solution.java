@@ -18,5 +18,8 @@ public class Solution {
     }
 
     public static void run(Scanner sc) {
+        if (sc.hasNext()) {
+
+        }
     }
 }
