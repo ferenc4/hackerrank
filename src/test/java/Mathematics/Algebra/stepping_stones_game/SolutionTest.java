@@ -69,8 +69,13 @@ public class SolutionTest {
                     .isEqualTo(expected.nextLine());
         }
         if (actual.hasNextLine() && !expected.hasNextLine()) {
-            assertThat(actual.nextLine()).isEmpty();
-            assertThat(actual.hasNextLine()).isFalse();
+            line++;
+            assertThat(actual.nextLine())
+                    .as("checking line %d in System.out", line)
+                    .isEmpty();
+            assertThat(actual.hasNextLine())
+                    .as("checking line %d in %s", line, outputFile(testId).getAbsolutePath())
+                    .isFalse();
         }
         System.err.println(getClass().getPackage().getName() + " passed against data (" +
                 outputFileName(testId) + "," +
