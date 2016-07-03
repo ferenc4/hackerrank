@@ -1,4 +1,4 @@
-package ArtificialIntelligence.NaturalLanguageProcessing.from_paragraphs_to_sentences;
+package ArtificialIntelligence.NaturalLanguageProcessing.FromParagraphsToSentences;
 
 import java.util.Scanner;
 

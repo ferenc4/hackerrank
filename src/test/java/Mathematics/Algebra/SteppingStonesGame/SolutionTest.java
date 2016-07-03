@@ -1,4 +1,4 @@
-package Mathematics.Algebra.stepping_stones_game;
+package Mathematics.Algebra.SteppingStonesGame;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
