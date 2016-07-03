@@ -1,6 +1,5 @@
 package ArtificialIntelligence.NaturalLanguageProcessing.FromParagraphsToSentences;
 
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -66,11 +65,13 @@ public class SolutionTest {
         while (actual.hasNextLine() && expected.hasNextLine()) {
             line++;
             assertThat(actual.nextLine())
-                    .as("checking line %d in %s", line, outputFile(testId).getAbsolutePath())
+                    .as("checking line %d in %s", line, outputFileName(testId))
                     .isEqualTo(expected.nextLine());
         }
 
-        assertThat(expected.hasNextLine()).isFalse();
+        assertThat(expected.hasNextLine())
+                .as("checking if line %d in %s is missing from System.out", line, outputFileName(testId))
+                .isFalse();
         //optional new line at the end of actual
         if (actual.hasNextLine()) {
             line++;
