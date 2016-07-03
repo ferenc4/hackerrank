@@ -1,0 +1,22 @@
+package ArtificialIntelligence.NaturalLanguageProcessing.from_paragraphs_to_sentences;
+
+import java.util.Scanner;
+
+/**
+ * Created by Ferenc on 6/30/2016.
+ */
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        if (sc.hasNextInt()) {
+            int tests = sc.nextInt();
+            for (int i = 0; i < tests; i++) {
+                runSimulation(sc);
+            }
+        }
+    }
+
+    public static void runSimulation(Scanner sc) {
+    }
+}
