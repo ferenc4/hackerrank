@@ -10,11 +10,11 @@ public class TemplateSolution {
         if (sc.hasNextInt()) {
             int tests = sc.nextInt();
             for (int i = 0; i < tests; i++) {
-                runSimulation(sc);
+                run(sc);
             }
         }
     }
 
-    public static void runSimulation(Scanner sc) {
+    public static void run(Scanner sc) {
     }
 }
