@@ -1,11 +1,11 @@
 package Mathematics.Algebra.SteppingStonesGame;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +30,7 @@ public class SolutionTest {
     public void setUpInputStream(String fileId) throws IOException {
         String path = getTestDataFilePath();
         System.setIn(new ByteArrayInputStream(
-                FileUtils.readFileToByteArray(inputFile(fileId))
+                Files.readAllBytes(new File(getTestDataFilePath() + inputFileName(fileId)).toPath())
         ));
     }
 
@@ -40,10 +40,6 @@ public class SolutionTest {
 
     String inputFileName(String id) {
         return "input" + id + ".txt";
-    }
-
-    File inputFile(String id) {
-        return new File(getTestDataFilePath() + inputFileName(id));
     }
 
     String outputFileName(String id) {
