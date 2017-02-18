@@ -41,7 +41,6 @@ public class Question {
     private void testAnswerUnsafely()
             throws IOException, URISyntaxException, InvocationTargetException, IllegalAccessException {
         File folder = new File(testDataFilePath);
-        System.out.println("folder = " + folder);
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles != null) {
             for (File testDataFile : listOfFiles) {
