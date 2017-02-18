@@ -1,4 +1,4 @@
-package Mathematics.Algebra.SteppingStonesGame;
+package artificial_intelligence.natural_language_processing.from_paragraphs_to_sentences;
 
 import org.junit.Test;
 import testutils.Question;

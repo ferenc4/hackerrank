@@ -1,4 +1,4 @@
-package Mathematics.Algebra.SteppingStonesGame;
+package mathematics.algebra.stepping_stones_game;
 
 import java.math.BigInteger;
 import java.util.Scanner;
