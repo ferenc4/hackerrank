@@ -22,7 +22,7 @@ public class Solution {
         }
     }
 
-    public static void runSimulation(Scanner sc) {
+    private static void runSimulation(Scanner sc) {
         if (sc.hasNextBigInteger()) {
             BigInteger goalBlock = sc.nextBigInteger();
             BigInteger steps = getSteps(goalBlock);
@@ -34,7 +34,7 @@ public class Solution {
         }
     }
 
-    public static BigInteger getSteps(BigInteger goalBlock) {
+    private static BigInteger getSteps(BigInteger goalBlock) {
         BigInteger calcPart = goalBlock
                 .multiply(BigInteger.valueOf(8))
                 .add(BigInteger.ONE);
@@ -54,7 +54,7 @@ public class Solution {
         return BigInteger.valueOf(-1);
     }
 
-    public static BigInteger sqrt(BigInteger x) {
+    private static BigInteger sqrt(BigInteger x) {
         BigInteger div = BigInteger.ZERO.setBit(x.bitLength() / 2);
         BigInteger div2 = div;
 
