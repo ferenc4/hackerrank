@@ -1,5 +1,7 @@
 package testutils;
 
+import org.junit.ComparisonFailure;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,10 +21,12 @@ public class Question {
     private ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final String[] args = {"main"};
     private final String testDataFilePath;
+    private final String solutionClassName;
 
     public Question(Class<?> solutionClass) throws NoSuchMethodException {
         Class[] argTypes = new Class[]{String[].class};
         String separator = FileSystems.getDefault().getSeparator();
+        solutionClassName = solutionClass.getName();
         testDataFilePath = "src" + separator +
                 "test" + separator +
                 "resources" + separator +
@@ -42,6 +46,7 @@ public class Question {
             throws IOException, URISyntaxException, InvocationTargetException, IllegalAccessException {
         File folder = new File(testDataFilePath);
         File[] listOfFiles = folder.listFiles();
+        System.err.println("Running " + solutionClassName);
         if (listOfFiles != null) {
             for (File testDataFile : listOfFiles) {
                 String outputTestFileNamePattern = "output(\\d\\d).txt";
@@ -52,8 +57,16 @@ public class Question {
                     setUpOutputStream();
 
                     methodToCall.invoke(null, (Object) args);
-                    doAssertion(testId);
-
+                    boolean pass = true;
+                    try {
+                        doAssertion(testId);
+                    } catch (ComparisonFailure e) {
+                        e.printStackTrace();
+                        pass = false;
+                    }
+                    System.err.println("[" + (pass ? "pass" : "fail") + "] " +
+                            "I: " + inputFileName(testId) + ", " +
+                            "O: " + outputFileName(testId));
                     cleanUpInputStream();
                     cleanUpOutputStream();
                 }
@@ -86,10 +99,6 @@ public class Question {
                     .isFalse();
         }
 
-        System.err.println(getClass().getPackage().getName() + " passed against data (" +
-                outputFileName(testId) + "," +
-                inputFileName(testId) + ")"
-        );
     }
 
     private String getTestId(String name) {
