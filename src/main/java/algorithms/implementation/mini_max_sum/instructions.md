@@ -6,7 +6,7 @@ A single line of five space-separated integers.
 
 Constraints
 
-Each integer is in the inclusive range [1,10^9].
+Each integer is in the inclusive range [1,10<sup>9</sup>].
 Output Format
 
 Print two space-separated long integers denoting the respective minimum and maximum values that can be calculated by summing exactly four of the five integers. (The output can be greater than 32 bit integer.)
