@@ -14,17 +14,17 @@ public class Solution {
         int aAsAscii = (int) 'a';
         for (int i = 0; i < 26; i++) {
             if (sc.hasNextInt()) {
-                int tests = sc.nextInt();
-                alphabet.put((char) (aAsAscii + i), i);
+                alphabet.put((char) (aAsAscii + i), sc.nextInt());
             }
         }
 
         assert sc.hasNext();
         String text = sc.next();
-        int size = 0;
+        int tallest = 0;
         for (int i = 0; i < text.length(); i++) {
-            size += alphabet.get(text.charAt(i));
+            tallest = Integer.max(tallest, alphabet.get(text.charAt(i)));
         }
-        System.out.println(size);
+        int area = tallest * text.length();
+        System.out.println(area);
     }
 }
