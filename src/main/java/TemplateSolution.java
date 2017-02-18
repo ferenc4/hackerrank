@@ -15,6 +15,6 @@ public class TemplateSolution {
         }
     }
 
-    public static void run(Scanner sc) {
+    private static void run(Scanner sc) {
     }
 }
