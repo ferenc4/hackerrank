@@ -1,120 +1,14 @@
 package Mathematics.Algebra.SteppingStonesGame;
 
 import org.junit.Test;
-
-import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.util.Scanner;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import testutils.Question;
 
 /**
  * Created by Ferenc on 6/30/2016.
  */
 public class SolutionTest {
-    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
-    final String outputTestFileNamePattern = "output(\\d\\d).txt";
-
-    public void setUpOutputStream() {
-        outContent.reset();
-        System.setOut(new PrintStream(outContent));
-    }
-
-    public void cleanUpOutputStream() {
-        System.setOut(null);
-    }
-
-    public void setUpInputStream(String fileId) throws IOException {
-        String path = getTestDataFilePath();
-        System.setIn(new ByteArrayInputStream(
-                Files.readAllBytes(new File(getTestDataFilePath() + inputFileName(fileId)).toPath())
-        ));
-    }
-
-    public void cleanUpInputStream() {
-        System.setIn(null);
-    }
-
-    String inputFileName(String id) {
-        return "input" + id + ".txt";
-    }
-
-    String outputFileName(String id) {
-        return "output" + id + ".txt";
-    }
-
-    File outputFile(String id) {
-        return new File(getTestDataFilePath() + outputFileName(id));
-    }
-
-    void doAssertion(String testId) throws IOException {
-        String newLn = System.lineSeparator();
-
-        Solution.main(new String[]{"main"});
-
-        Scanner actual = new Scanner(new String(outContent.toByteArray()));
-        Scanner expected = new Scanner(outputFile(testId));
-        int line = 0;
-        while (actual.hasNextLine() && expected.hasNextLine()) {
-            line++;
-            assertThat(actual.nextLine())
-                    .as("checking line %d in %s", line, outputFileName(testId))
-                    .isEqualTo(expected.nextLine());
-        }
-
-        assertThat(expected.hasNextLine())
-                .as("checking if line %d in %s is missing from System.out", line, outputFileName(testId))
-                .isFalse();
-        //optional new line at the end of actual
-        if (actual.hasNextLine()) {
-            line++;
-            assertThat(actual.nextLine())
-                    .as("checking line %d in System.out", line)
-                    .isEmpty();
-            assertThat(actual.hasNextLine())
-                    .as("checking line %d in %s", line, outputFile(testId).getAbsolutePath())
-                    .isFalse();
-        }
-
-        System.err.println(getClass().getPackage().getName() + " passed against data (" +
-                outputFileName(testId) + "," +
-                inputFileName(testId) + ")"
-        );
-    }
-
-    String getTestId(String name) {
-        return name.replaceAll("\\D+", "");
-    }
-
     @Test
-    public void main() throws IOException, URISyntaxException {
-        File folder = new File(getTestDataFilePath());
-        File[] listOfFiles = folder.listFiles();
-        if (listOfFiles != null) {
-            for (File testDataFile : listOfFiles) {
-                if (testDataFile.isFile() && testDataFile.getName().matches(outputTestFileNamePattern)) {
-                    String testId = getTestId(testDataFile.getName());
-
-                    setUpInputStream(testId);
-                    setUpOutputStream();
-
-                    doAssertion(testId);
-
-                    cleanUpInputStream();
-                    cleanUpOutputStream();
-                }
-            }
-        }
-    }
-
-    public String getTestDataFilePath() {
-        String separator = FileSystems.getDefault().getSeparator();
-        return "src" + separator +
-                "test" + separator +
-                "resources" + separator +
-                getClass().getPackage().getName().replace(".", separator) + separator;
+    public void runSolution() throws NoSuchMethodException {
+        new Question(Solution.class).testAnswer();
     }
 }
