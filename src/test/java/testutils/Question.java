@@ -47,6 +47,7 @@ public class Question {
         File folder = new File(testDataFilePath);
         File[] listOfFiles = folder.listFiles();
         System.err.println("Running " + solutionClassName);
+        boolean allResultsPass = true;
         if (listOfFiles != null) {
             for (File testDataFile : listOfFiles) {
                 String outputTestFileNamePattern = "output(\\d\\d).txt";
@@ -64,6 +65,7 @@ public class Question {
                         e.printStackTrace();
                         pass = false;
                     }
+                    allResultsPass = allResultsPass && pass;
                     System.err.println("[" + (pass ? "pass" : "fail") + "] " +
                             "I: " + inputFileName(testId) + ", " +
                             "O: " + outputFileName(testId));
@@ -72,6 +74,7 @@ public class Question {
                 }
             }
         }
+        assertThat(allResultsPass).isTrue().as("For more information see the stacktrace above.");
     }
 
     private void doAssertion(String testId) throws IOException {
