@@ -1,5 +1,6 @@
 package testutils;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.ComparisonFailure;
 
 import java.io.*;
@@ -9,6 +10,7 @@ import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.Scanner;
+import java.util.StringJoiner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,9 +21,12 @@ public class Question {
 
     private Method methodToCall;
     private ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final String[] args = {"main"};
+    private String[] args = {"main"};
     private final String testDataFilePath;
     private final String solutionClassName;
+    private String fileIdPattern = "\\d\\d";
+    ;
+    private boolean useFilesAsInput = true;
 
     public Question(Class<?> solutionClass) throws NoSuchMethodException {
         Class[] argTypes = new Class[]{String[].class};
@@ -34,12 +39,27 @@ public class Question {
         methodToCall = solutionClass.getDeclaredMethod("main", argTypes);
     }
 
-    public void testAnswer() {
+    public Question addArguments(String[] args) {
+        this.args = ArrayUtils.addAll(this.args, args);
+        return this;
+    }
+
+    public Question limitDataFilesTo(String... ids) {
+        StringJoiner stringJoiner = new StringJoiner("|");
+        for (int i = 0; i < ids.length; i++) {
+            stringJoiner.add(ids[i]);
+        }
+        fileIdPattern = stringJoiner.toString();
+        return this;
+    }
+
+    public Question testSolution() {
         try {
             testAnswerUnsafely();
         } catch (InvocationTargetException | IllegalAccessException | URISyntaxException | IOException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
     private void testAnswerUnsafely()
@@ -50,7 +70,7 @@ public class Question {
         boolean allResultsPass = true;
         if (listOfFiles != null) {
             for (File testDataFile : listOfFiles) {
-                String outputTestFileNamePattern = "output(\\d\\d).txt";
+                String outputTestFileNamePattern = "output(" + fileIdPattern + ").txt";
                 if (testDataFile.isFile() && testDataFile.getName().matches(outputTestFileNamePattern)) {
                     String testId = getTestId(testDataFile.getName());
 
@@ -66,9 +86,12 @@ public class Question {
                         pass = false;
                     }
                     allResultsPass = allResultsPass && pass;
-                    System.err.println("[" + (pass ? "pass" : "fail") + "] " +
-                            "I: " + inputFileName(testId) + ", " +
-                            "O: " + outputFileName(testId));
+                    System.err.print("[" + (pass ? "pass" : "fail") + "] ");
+                    if (useFilesAsInput) {
+                        System.err.print("I: " + inputFileName(testId) + ", ");
+                    }
+                    System.err.print("O: " + outputFileName(testId));
+                    System.err.println("");
                     cleanUpInputStream();
                     cleanUpOutputStream();
                 }
@@ -101,7 +124,6 @@ public class Question {
                     .as("checking line %d in %s", line, outputFile(testId).getAbsolutePath())
                     .isFalse();
         }
-
     }
 
     private String getTestId(String name) {
@@ -118,9 +140,11 @@ public class Question {
     }
 
     private void setUpInputStream(String fileId) throws IOException {
-        System.setIn(new ByteArrayInputStream(
-                Files.readAllBytes(new File(testDataFilePath + inputFileName(fileId)).toPath())
-        ));
+        if (useFilesAsInput) {
+            System.setIn(new ByteArrayInputStream(
+                    Files.readAllBytes(new File(testDataFilePath + inputFileName(fileId)).toPath())
+            ));
+        }
     }
 
     private void cleanUpInputStream() {
@@ -139,4 +163,8 @@ public class Question {
         return new File(testDataFilePath + outputFileName(id));
     }
 
+    public Question useFilesAsInput(boolean fileAsInput) {
+        this.useFilesAsInput = fileAsInput;
+        return this;
+    }
 }

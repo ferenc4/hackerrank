@@ -9,6 +9,6 @@ import testutils.Question;
 public class SolutionTest {
     @Test
     public void runSolution() throws NoSuchMethodException {
-        new Question(Solution.class).testAnswer();
+        new Question(Solution.class).testSolution();
     }
 }
