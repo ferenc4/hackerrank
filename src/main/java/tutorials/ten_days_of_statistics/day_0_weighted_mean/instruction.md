@@ -1,0 +1,1 @@
+https://www.hackerrank.com/challenges/s10-weighted-mean?h_r=next-challenge&h_v=zen
